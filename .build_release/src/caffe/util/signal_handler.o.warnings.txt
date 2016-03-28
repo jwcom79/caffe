@@ -1,0 +1,6 @@
+In file included from src/caffe/util/signal_handler.cpp:7:0:
+./include/caffe/util/signal_handler.h:4:34: fatal error: caffe/proto/caffe.pb.h: No such file or directory
+ #include "caffe/proto/caffe.pb.h"
+                                  ^
+compilation terminated.
+The bug is not reproducible, so it is likely a hardware or OS problem.
