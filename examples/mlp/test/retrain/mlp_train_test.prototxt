@@ -1,0 +1,221 @@
+name: "MLP"
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 10 
+    backend: LMDB
+  }
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 200 
+    weight_filler {
+      type: "xavier"
+    }
+	}
+	fixed_param {
+		fixed: 1;
+	}
+}
+layer {
+  name: "ip1-1"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "ip1-1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 50 
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "relu1-1"
+  type: "ReLU"
+  bottom: "ip1-1"
+  top: "ip1-1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 200
+    weight_filler {
+      type: "xavier"
+    }
+  }
+	fixed_param {
+		fixed: 1;
+	}
+}
+layer {
+  name: "ip2-1"
+  type: "InnerProduct"
+  bottom: "ip1-1"
+  top: "ip2-1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 50
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+layer {
+  name: "relu2-1"
+  type: "ReLU"
+  bottom: "ip2-1"
+  top: "ip2-1"
+}
+layer {
+  name: "ip3"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "ip3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+  }
+	fixed_param {
+		fixed: 1;
+	}
+}
+layer {
+  name: "ip3-1"
+  type: "InnerProduct"
+  bottom: "ip2-1"
+  top: "ip3-1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 20
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+layer {
+	name: "ip3_flatten"
+	type: "Flatten"
+	bottom: "ip3"
+	top: "ip3_flatten"
+}
+layer {
+	name: "concat1"
+	type: "Concat"
+	bottom: "ip3_flatten"
+	bottom: "ip3-1"
+	top: "concat1"
+	concat_param {
+		axis: 1
+	}
+}
+layer {
+  name: "ip4"
+  type: "InnerProduct"
+  bottom: "concat1"
+  top: "ip4"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip4"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip4"
+  bottom: "label"
+  top: "loss"
+}
