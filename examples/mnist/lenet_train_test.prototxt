@@ -45,7 +45,7 @@ layer {
     lr_mult: 2
   }
   convolution_param {
-    num_output: 20
+    num_output: 20 
     kernel_size: 5
     stride: 1
     weight_filler {
@@ -113,7 +113,7 @@ layer {
     lr_mult: 2
   }
   inner_product_param {
-    num_output: 5
+    num_output: 1024
     weight_filler {
       type: "xavier"
     }
@@ -123,8 +123,8 @@ layer {
   }
 }
 layer {
-  name: "relu1"
-  type: "ReLU"
+  name: "tanh1"
+  type: "TanH"
   bottom: "ip1"
   top: "ip1"
 }

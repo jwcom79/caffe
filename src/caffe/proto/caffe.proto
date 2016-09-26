@@ -306,7 +306,7 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
-// LayerParameter next available layer-specific ID: 141 (last added: dropin_param)
+// LayerParameter next available layer-specific ID: 144 (last added: fixed_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -392,6 +392,9 @@ message LayerParameter {
   optional TileParameter tile_param = 138;
   optional WindowDataParameter window_data_param = 129;
 	optional PushinParameter pushin_param = 140;
+	optional PruningParameter pruning_param = 141;
+  optional cReLUParameter crelu_param = 142;
+	optional FixedParameter fixed_param = 143;
 }
 
 // Message that stores parameters used to apply transformation
@@ -1255,4 +1258,23 @@ message PReLUParameter {
 
 message PushinParameter {
   optional float pushin_ratio = 1 [default = 0.01]; // pushin ratio
+}
+
+message PruningParameter {
+		// Pruning coefficient for deep compression
+		optional float coeff = 1 [default = 0];
+}
+
+message cReLUParameter {
+  enum Engine {
+    DEFAULT = 0;
+    CAFFE = 1;
+    CUDNN = 2;
+  }
+  optional Engine engine = 1 [default = DEFAULT];
+}
+
+message FixedParameter {
+		// Pruning coefficient for deep compression
+		optional bool fixed = 1 [default = false];
 }

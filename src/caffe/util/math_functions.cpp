@@ -1,7 +1,11 @@
 #include <boost/math/special_functions/next.hpp>
 #include <boost/random.hpp>
 
+#include <cmath>
+#include <functional>
 #include <limits>
+#include <utility>
+#include <vector>
 
 #include "caffe/common.hpp"
 #include "caffe/util/math_functions.hpp"
@@ -371,5 +375,20 @@ void caffe_cpu_scale<double>(const int n, const double alpha, const double *x,
   cblas_dcopy(n, x, 1, y, 1);
   cblas_dscal(n, alpha, y, 1);
 }
+
+template <typename Dtype>
+void caffe_cpu_prune(const int n, Dtype* x, Dtype* mask) {
+		for (int k = 0; k < n; k++) {
+				if (x[k] == 0){
+						mask[k] = 0;
+				}
+		}
+}
+
+template
+void caffe_cpu_prune<double>(const int n, double* x, double* mask);
+
+template
+void caffe_cpu_prune<float>(const int n, float* x, float* mask);
 
 }  // namespace caffe

@@ -1,0 +1,7 @@
+*.mdb
+*.txt
+*.caffemodel
+*.solverstate
+*.jpg
+*.gz
+./data/*

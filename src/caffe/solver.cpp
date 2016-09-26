@@ -460,6 +460,9 @@ string Solver<Dtype>::SnapshotToBinaryProto() {
   NetParameter net_param;
   net_->ToProto(&net_param, param_.snapshot_diff());
   WriteProtoToBinaryFile(net_param, model_filename);
+	////////////////////////////////////////////////////////////////////////////////////
+	WriteProtoToTextFile(net_param, "/home/flathead/bitbucket/mycaffe/LOG/log.txt");
+	////////////////////////////////////////////////////////////////////////////////////
   return model_filename;
 }
 
@@ -468,6 +471,10 @@ string Solver<Dtype>::SnapshotToHDF5() {
   string model_filename = SnapshotFilename(".caffemodel.h5");
   LOG(INFO) << "Snapshotting to HDF5 file " << model_filename;
   net_->ToHDF5(model_filename, param_.snapshot_diff());
+	////////////////////////////////////////////////////////////////////////////////////
+	//NetParameter net_param;
+	//WriteProtoTotextFile(net_param, "/home/flathead/bitbucket/mycaffe/LOG/"+model_filename);
+	////////////////////////////////////////////////////////////////////////////////////
   return model_filename;
 }
 
